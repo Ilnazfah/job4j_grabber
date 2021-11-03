@@ -17,8 +17,8 @@ import static org.quartz.SimpleScheduleBuilder.*;
 public class AlertRabbit {
 
     public static void main(String[] args) {
-        int interval = Integer.parseInt(getProperties().getProperty("rabbit.interval"));
-        try (Connection cnt = AlertRabbit.getConnection(getProperties())) {
+        Properties properties = getProperties();
+        try (Connection cnt = AlertRabbit.getConnection(properties)) {
             List<Long> store = new ArrayList<>();
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
@@ -28,7 +28,7 @@ public class AlertRabbit {
                     .usingJobData(data)
                     .build();
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(interval)
+                    .withIntervalInSeconds(Integer.parseInt(properties.getProperty("rabbit.interval")))
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
