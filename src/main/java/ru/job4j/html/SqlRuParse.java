@@ -21,6 +21,5 @@ public class SqlRuParse {
                 System.out.println(dateTimeParser.parse(date));
             }
         }
-
     }
 }
