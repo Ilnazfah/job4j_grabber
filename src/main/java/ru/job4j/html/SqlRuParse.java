@@ -8,7 +8,7 @@ import ru.job4j.grabber.utils.SqlRuDateTimeParser;
 
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-        for (int i = 1; i <= 5 ; i++) {
+        for (int i = 1; i <= 5; i++) {
             Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%s", i)).get();
             Elements row = doc.select(".postslisttopic");
             SqlRuDateTimeParser dateTimeParser = new SqlRuDateTimeParser();
