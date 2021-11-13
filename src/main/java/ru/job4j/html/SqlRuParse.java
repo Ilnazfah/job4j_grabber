@@ -3,31 +3,29 @@ package ru.job4j.html;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import ru.job4j.grabber.utils.SqlRuDateTimeParser;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-            Document doc = Jsoup.connect("https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t").get();
-            Element row = doc.select(".msgTable").get(0);
-            String description = row.child(0).child(1).child(1).text();
-            String date = row.child(0).child(2).child(0).text().substring(0, 16);
-            System.out.println(description);
-            SqlRuDateTimeParser dateTimeParser = new SqlRuDateTimeParser();
-            System.out.println(dateTimeParser.parse(date));
+        String link = "https://www.sql.ru/forum/1325330/lidy-be-fe-senior-cistemnye-analitiki-qa-i-devops-moskva-do-200t";
+        SqlRuParse sqlRuParse = new SqlRuParse();
+        Post post = sqlRuParse.getPost(link);
+        System.out.println(post);
+    }
 
-//        for (int i = 1; i <= 5; i++) {
-//            Document doc = Jsoup.connect(String.format("https://www.sql.ru/forum/job-offers/%s", i)).get();
-//            Elements row = doc.select(".postslisttopic");
-//            SqlRuDateTimeParser dateTimeParser = new SqlRuDateTimeParser();
-//            for (Element td : row) {
-//                Element href = td.child(0);
-//                System.out.println(href.attr("href"));
-//                System.out.println(href.text());
-//                Element parent = td.parent();
-//                String date = parent.child(5).text();
-//                System.out.println(dateTimeParser.parse(date));
-//            }
-//        }
+    public Post getPost(String link) throws IOException {
+        Post result;
+        Document doc = Jsoup.connect(link).get();
+        Element row = doc.select(".msgTable").get(0);
+        String title = row.child(0).child(0).child(0).text();
+        String description = row.child(0).child(1).child(1).text();
+        String date = row.child(0).child(2).child(0).text().substring(0, 16);
+        SqlRuDateTimeParser dateTimeParser = new SqlRuDateTimeParser();
+        LocalDateTime created= dateTimeParser.parse(date);
+        result = new Post(0, title, link, description, created);
+        return result;
     }
 }
