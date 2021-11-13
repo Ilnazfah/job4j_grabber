@@ -24,7 +24,7 @@ public class SqlRuParse {
         String description = row.child(0).child(1).child(1).text();
         String date = row.child(0).child(2).child(0).text().substring(0, 16);
         SqlRuDateTimeParser dateTimeParser = new SqlRuDateTimeParser();
-        LocalDateTime created= dateTimeParser.parse(date);
+        LocalDateTime created = dateTimeParser.parse(date);
         result = new Post(0, title, link, description, created);
         return result;
     }
