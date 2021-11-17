@@ -39,20 +39,21 @@ public class SqlRuParse implements Parse {
         return posts;
     }
 
-    public Post detail(String link) throws IOException {
-        int id = Integer.parseInt(link.split("/")[4]);
-        Document doc = Jsoup.connect(link).get();
-        Element row = doc.select(".msgTable").get(0);
-        String title = row.child(0).child(0).child(0).text();
-        String description = row.child(0).child(1).child(1).text();
-        String date = row.child(0).child(2).child(0).text().substring(0, 16);
-        LocalDateTime created = null;
+    public Post detail(String link) {
+        Post post = null;
         try {
+            Document doc = Jsoup.connect(link).get();
+            Element row = doc.select(".msgTable").get(0);
+            String title = row.child(0).child(0).child(0).text();
+            String description = row.child(0).child(1).child(1).text();
+            String date = row.child(0).child(2).child(0).text().substring(0, 16);
+            LocalDateTime created;
             created = dateTimeParser.parse(date);
-        } catch (ParseException e) {
+            post = new Post(title, link, description, created);
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return new Post(id, title, link, description, created);
+        return post;
     }
 
     public static void main(String[] args) {
