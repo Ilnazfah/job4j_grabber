@@ -24,7 +24,7 @@ public class SqlRuParse implements Parse {
     @Override
     public List<Post> list(String link) {
         List<Post> posts = new ArrayList<>();
-        for (int i = 1; i <= 5 ; i++) {
+        for (int i = 1; i <= 5; i++) {
             try {
                 Document doc = Jsoup.connect(String.format("%s/%s", link, i)).get();
                 Elements row = doc.select(".postslisttopic");
