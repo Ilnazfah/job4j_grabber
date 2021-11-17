@@ -46,7 +46,6 @@ public class SqlRuParse implements Parse {
         String title = row.child(0).child(0).child(0).text();
         String description = row.child(0).child(1).child(1).text();
         String date = row.child(0).child(2).child(0).text().substring(0, 16);
-        DateTimeParser dateTimeParser = this.dateTimeParser;
         LocalDateTime created = null;
         try {
             created = dateTimeParser.parse(date);
