@@ -9,9 +9,9 @@ import static java.util.Map.entry;
 public class SqlRuDateTimeParser implements DateTimeParser {
 
     private static final Map<String, String> MONTHS = Map.ofEntries(
-            entry("янв", "1"), entry("фев", "2"), entry("мар", "3"),
-            entry("апр", "4"), entry("май", "5"), entry("июн", "6"),
-            entry("июл", "7"), entry("авг", "8"), entry("сен", "9"),
+            entry("янв", "01"), entry("фев", "02"), entry("мар", "03"),
+            entry("апр", "04"), entry("май", "05"), entry("июн", "06"),
+            entry("июл", "07"), entry("авг", "08"), entry("сен", "09"),
             entry("окт", "10"), entry("ноя", "11"), entry("дек", "12"));
 
     @Override
@@ -29,7 +29,10 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         } else {
             String month = parse.split(" ")[1];
             String data = parse.replace(month, MONTHS.get(month));
-            dateFormat = DateTimeFormatter.ofPattern("d M yy, HH:mm");
+            dateFormat = DateTimeFormatter.ofPattern("d MM yy, HH:mm");
+            if (data.split(" ")[0].length() < 2) {
+                data = data.substring(0, 14);
+            }
             result = LocalDateTime.parse(data, dateFormat);
         }
         return result;
